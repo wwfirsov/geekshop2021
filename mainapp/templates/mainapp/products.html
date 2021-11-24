@@ -1,6 +1,7 @@
 {% extends 'mainapp/base.html' %}
-{% block title %} Каталог {% endblock %}
-
+{% block title %}
+	{{ title|title }}
+{% endblock %}
 		{% block menu %}
 		<div class="hero-white">
 			<div class="header clearfix">
@@ -10,31 +11,30 @@
                 <a href="#" class="basket"></a>
 			</div>
 		</div>
-
-
+		{% endblock %}
+		{% block content %}
 		<div class="details">
 			<div class="links clearfix">
 				{% include 'mainapp/includes/inc_categories_menu.html' %}
 			</div>
-
 			<div class="details-products">
 				<div class="details-slider">
 					<div class="slider-product">
-						<img src="static/img/slider1.jpg">
+						<img src="/static/img/slider1.jpg">
 					</div>
 					<div class="slider-control">
 						<div class="block">
-							<a href="#"><img src="static/img/controll.jpg" alt="">
+							<a href="#"><img src="/static/img/controll.jpg" alt="">
 								<div class="text"></div>
 							</a>
 						</div>
 						<div class="block">
-							<a href="#"><img src="static/img/controll1.jpg" alt="">
+							<a href="#"><img src="/static/img/controll1.jpg" alt="">
 								<div class="text"></div>
 							</a>
 						</div>
 						<div class="block">
-							<a href="#"><img src="static/img/controll2.jpg" alt="">
+							<a href="#"><img src="/static/img/controll2.jpg" alt="">
 								<div class="text"></div>
 							</a>
 						</div>
@@ -62,16 +62,17 @@
 			<div class="related">
 				<div class="title clearfix">
 					<h2>Похожие продукты</h2>
-					<a class="explore" href="#">показать все <img src="static/img/arrow.png" alt=""></a>
+					<a class="explore" href="#">показать все <img src="/static/img/arrow.png" alt=""></a>
 				</div>
 				<div class="related-products clearfix">
 					{% for product in products %}
 					<div class="block">
-						<a href="#"><img src="/static/img/{{ product.img }}" alt="">
+						<a href="#"><img src="/media/{{ product.image }}" alt="">
 							<div class="text">
-								<img src="static/img/icon-hover.png" alt="img">
+								<img src="/static/img/icon-hover.png" alt="img">
+								<h3>{{ product.category.name }}</h3>
 								<h4>{{ product.name }}</h4>
-								<p>{{ product.text }}</p>
+								<p>{{ product.descriptions }}</p>
 							</div>
 						</a>
 					</div>
@@ -82,7 +83,6 @@
 		</div>
 		{% endblock %}
 		<div class="clr"></div>
-
 	</div>
 </body>
 </html>
