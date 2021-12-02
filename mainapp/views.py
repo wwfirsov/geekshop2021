@@ -39,10 +39,7 @@ def products(request, pk=None):
         'links_menu': links_menu,
         'products': product,
         'menu': menu,
-    }
-    # content = {'title': title, 'products': product}
-
-
+        }
     return render(request, 'mainapp/products.html', content)
 
 def contact(request):
