@@ -3,8 +3,8 @@
     <li>
         <a href="{% url link.href %}"
             class ="{% if request.resolver_match.url_name == link.href %}
-            active
-            {% endif %}">
+                active
+                {% endif %}">
             {{ link.name }}
         </a>
     </li>
@@ -19,3 +19,9 @@
         {% endif%}
 
 </ul>
+
+<a href="{% url 'basket:view' %}" class="basket">
+    <span>
+        {% if basket %} {{ basket|length }} {% endif %}
+    </span>
+</a>
