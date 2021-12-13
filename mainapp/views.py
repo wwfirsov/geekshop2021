@@ -95,6 +95,8 @@ def contact(request):
 def main(request):
      title = 'главная'
      product = Products.objects.all()[:6]
+     links_menu = ProductCategory.objects.all()[:6]
+
      content = {'title': title,
                 'links_menu': links_menu,
                 'products': product,
@@ -105,12 +107,14 @@ def main(request):
 
 def product(request, pk):
     title = 'продукты'
+    links_menu = ProductCategory.objects.all()[:6]
 
-    context = {
+    content = {
         'title': title,
-        'links_menu': ProductCategory.objects.all(),
-        'product': get_object_or_404(Product, pk=pk),
+        'links_menu': links_menu,
+        'product': get_object_or_404(Products, pk=pk),
         'basket': get_basket(request.user),
+        'menu':menu,
     }
 
-    return render(request, 'mainapp/product.html', context)
+    return render(request, 'mainapp/product.html', content)
