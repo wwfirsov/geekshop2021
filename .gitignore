@@ -1,7 +1,4 @@
-env/
-env1/
-.env
-.idea
-.vscode/
-db.sqlite3
-__pycache__/
+/.idea
+db.sqlite3_old
+../venv
+
