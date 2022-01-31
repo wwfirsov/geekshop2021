@@ -57,4 +57,3 @@ class ProductDetail(DetailView):
     #     product = self.get_object()
     #     context['product'] = product
     #     return context
-
