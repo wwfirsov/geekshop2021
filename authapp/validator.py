@@ -15,4 +15,3 @@ def validate_name(value):
             params={'value': value},
         )
 
-
