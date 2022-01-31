@@ -1,57 +1,60 @@
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render
-from django.templatetags.static import static
-import os
+
 import json
-from mainapp.models import Products, ProductCategory
+import os
+
+from django.views.generic import DetailView
+
+from mainapp.models import Product, ProductCategory
+
+MODULE_DIR = os.path.dirname(__file__)
+
 
 # Create your views here.
 
-module_dir = os.path.dirname(__file__,)
-
-links_menu = [
-        {'href': 'products_all', 'name': 'все'},
-        {'href': 'products_home', 'name': 'дом'},
-        {'href': 'products_office', 'name': 'офис'},
-        {'href': 'products_modern', 'name': 'модерн'},
-        {'href': 'products_classic', 'name': 'классика'},
-    ]
-
-menu = [
-        {'href': 'index', 'name': 'главная'},
-        {'href': 'products:index', 'name': 'продукты'},
-        {'href': 'contact', 'name': 'контакты'},
-]
-
 def index(request):
-    context = {'title':'Магазин', 'menu':menu}
-    return render(request, "mainapp/index.html", context)
-
-def products(request, pk=None):
-    print(pk)
-    file_path = os.path.join(module_dir, 'fixtures/products.json')
-    products = json.load(open(file_path, encoding='utf-8'))
+    context = {
+        'title': 'Geekshop', }
+    return render(request, 'mainapp/index.html', context)
 
 
+def products(request,id_category=None,page=1):
 
-    title = 'Продукты'
-    product = Products.objects.all()[:4]
-    content = {'title': title,
-        'links_menu': links_menu,
-        'products': product,
-        'menu': menu,
-        }
-    return render(request, 'mainapp/products.html', content)
+    context = {
+        'title': 'Geekshop | Каталог',
+    }
 
-def contact(request):
-    context = {'title': 'Контакты', 'menu':menu}
-    return render(request, "mainapp/contact.html", context)
+    if id_category:
+        products= Product.objects.filter(category_id=id_category)
+    else:
+        products = Product.objects.all()
 
-def main(request):
-     title = 'главная'
-     product = Products.objects.all()[:4]
-     content = {'title': title,
-                'links_menu': links_menu,
-                'products': product,
-                'menu': menu,
-                }
-     return render(request, 'mainapp/products.html', content)
+    paginator = Paginator(products,per_page=3)
+
+    try:
+        products_paginator = paginator.page(page)
+    except PageNotAnInteger:
+        products_paginator = paginator.page(1)
+    except EmptyPage:
+        products_paginator = paginator.page(paginator.num_pages)
+
+
+    context['products'] = products_paginator
+    context['categories'] = ProductCategory.objects.all()
+    return render(request, 'mainapp/products.html', context)
+
+
+class ProductDetail(DetailView):
+    """
+    Контроллер вывода информации о продукте
+    """
+    model = Product
+    template_name = 'mainapp/detail.html'
+
+    # def get_context_data(self, **kwargs):
+    #     context = super(ProductDetail, self).get_context_data(**kwargs)
+    #     product = self.get_object()
+    #     context['product'] = product
+    #     return context
+
